@@ -163,9 +163,14 @@ void SpectatorConnect()
 // time
 // self
 ///////////////
+extern int g_matchstarttime;
 void PutSpectatorInServer()
 {
 //	G_sprint(self, 2, "Hellow %s\n", getname(self));
+	g_globalvars.msg_entity = EDICT_TO_PROG(self);
+        WriteByte(MSG_ONE, 38 /*svc_updatestatlong*/);
+        WriteByte(MSG_ONE, 18 /*STAT_MATCHSTARTTIME*/);
+        WriteLong(MSG_ONE, g_matchstarttime);
 
 	AutoTrackRestore();
 }

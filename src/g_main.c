@@ -67,6 +67,7 @@ gameData_t      gamedata =
     { ( edict_t * ) g_edicts, sizeof( gedict_t ), &g_globalvars, expfields , GAME_API_VERSION};
 
 float           starttime;
+int		g_matchstarttime;
 void            G_InitGame( int levelTime, int randomSeed );
 void			G_ShutDown();
 void            StartFrame( int time );

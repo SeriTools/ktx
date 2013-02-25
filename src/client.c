@@ -53,6 +53,8 @@ void race_stoprecord( qbool cancel );
 
 void del_from_specs_favourites(gedict_t *rm);
 
+extern int g_matchstarttime;
+
 void CheckAll ()
 {
 	static float next_check = -1;
@@ -1681,6 +1683,10 @@ void PutClientInServer( void )
 	{
 		teleport_player( self, self->s.v.origin, self->s.v.angles, tele_flags );
 	}
+	g_globalvars.msg_entity = EDICT_TO_PROG(self);
+	WriteByte(MSG_ONE, 38 /*svc_updatestatlong*/);
+	WriteByte(MSG_ONE, 18 /*STAT_MATCHSTARTTIME*/);
+	WriteLong(MSG_ONE, g_matchstarttime);
 }
 
 /*

@@ -29,6 +29,8 @@ void OnePlayerInstagibStats();
 void StartLogs();
 void StopLogs();
 
+extern int g_matchstarttime;
+
 // Return count of players which have state cs_connected or cs_spawned.
 // It is weird because used string comparision so I treat it as slow and idiotic but it return more players than CountPlayers().
 int WeirdCountPlayers(void)
@@ -1435,6 +1437,8 @@ void EndMatch ( float skip_log )
 	// allow ready/break in bloodfest without map reloading.
 	if ( k_bloodfest )
 		match_over = 0;
+
+	g_matchstarttime = 0;
 }
 
 void SaveOvertimeStats ()
@@ -1844,6 +1848,7 @@ void StartMatch ()
 	HideSpawnPoints();
 
 	match_start_time  = g_globalvars.time;
+	g_matchstarttime = (int) (g_globalvars.time*1000);
 	match_in_progress = 2;
 	
 	lastTeamLocationTime = -TEAM_LOCATION_UPDATE_TIME; // update on next frame
