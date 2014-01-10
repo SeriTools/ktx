@@ -2499,7 +2499,8 @@ void race_add_standard_routes( void )
 	char *coordx, *coordy, *coordz, *coordpitch, *coordyaw;
 
 	race_fropen( "race/routes/%s.routes", g_globalvars.mapname); // open the route file for current map
-	if ( race_fhandle < 0 ) return; // don't add anything if no file or non-openable file
+	if ( race_fhandle < 0 )
+		return; // don't add anything if no file or non-openable file
 
 	race_fgets_no_lf( line, MAX_TXTLEN );
 	max = atoi( line );
