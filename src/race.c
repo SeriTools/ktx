@@ -2399,6 +2399,26 @@ char *race_fgets( char *buf, int limit )
 	return ( ( c == -1 ) && ( string = buf ) ) ? NULL : buf;
 }
 
+char *race_fgets_no_lf( char *buf, int limit )
+{
+	int c = '\0';
+	char *string;
+
+	if ( race_fhandle < 0 )
+		return NULL;
+
+	string = buf;
+	while ( --limit > 0 && ( ( c = race_fgetc() ) != -1 ) )
+		if ( ( *string = c ) == '\n' )
+			break;
+		else
+			*string++;
+	*string = '\0';
+	//G_bprint( 2, "====> Read string: %s\n", buf );
+
+	return ( ( c == -1 ) && ( string = buf ) ) ? NULL : buf;
+}
+
 void read_topscores( void )
 {
 	char line[MAX_TXTLEN] = {0};
@@ -2481,29 +2501,29 @@ void race_add_standard_routes( void )
 	race_fropen( "race/routes/%s.routes", g_globalvars.mapname); // open the route file for current map
 	if ( race_fhandle < 0 ) return; // don't add anything if no file or non-openable file
 
-	race_fgets( line, MAX_TXTLEN );
+	race_fgets_no_lf( line, MAX_TXTLEN );
 	max = atoi( line );
 	for ( cnt = 0; cnt < max; cnt++ )
 	{
-		race_fgets( line, MAX_TXTLEN ); // space line
+		race_fgets_no_lf( line, MAX_TXTLEN ); // space line
 
-		race_fgets( line, MAX_TXTLEN ); // route name
-		race_fgets( line2, MAX_TXTLEN ); // route desc
+		race_fgets_no_lf( line, MAX_TXTLEN ); // route name
+		race_fgets_no_lf( line2, MAX_TXTLEN ); // route desc
 		race_set_route_name( line, line2 );
 
-		race_fgets( line, MAX_TXTLEN ); // route timeout
+		race_fgets_no_lf( line, MAX_TXTLEN ); // route timeout
 		race_set_route_timeout( atof( line ) );
 
-		race_fgets( line, MAX_TXTLEN ); // weapon mode
+		race_fgets_no_lf( line, MAX_TXTLEN ); // weapon mode
 		race_set_route_weapon_mode( atoi( line ) );
 
-		race_fgets( line, MAX_TXTLEN ); // falsestart mode
+		race_fgets_no_lf( line, MAX_TXTLEN ); // falsestart mode
 		race_set_route_falsestart_mode( atoi( line ) );
 
-		race_fgets( line, MAX_TXTLEN ); // number of route nodes
+		race_fgets_no_lf( line, MAX_TXTLEN ); // number of route nodes
 		nodemax = atoi( line ) - 2; // only loop nodeCheckPoint, nodeStart/nodeEnd is obviously the first/last node
 
-		race_fgets( line, MAX_TXTLEN ); // coords of start node
+		race_fgets_no_lf( line, MAX_TXTLEN ); // coords of start node
 		coordx = strtok(line, node_coords_delimiter);
 		coordy = strtok(NULL, node_coords_delimiter);
 		coordz = strtok(NULL, node_coords_delimiter);
@@ -2513,14 +2533,14 @@ void race_add_standard_routes( void )
 		
 		for ( nodecnt = 0; nodecnt < nodemax; nodecnt++ )
 		{
-			race_fgets( line, MAX_TXTLEN ); // coords of checkpoint node
+			race_fgets_no_lf( line, MAX_TXTLEN ); // coords of checkpoint node
 			coordx = strtok(line, node_coords_delimiter);
 			coordy = strtok(NULL, node_coords_delimiter);
 			coordz = strtok(NULL, node_coords_delimiter);
 			race_add_route_node( atof( coordx ), atof( coordy ), atof( coordz ), 0, 0, nodeCheckPoint ); // only the start node needs pitch/yaw values
 		}
 
-		race_fgets( line, MAX_TXTLEN ); // coords of end node
+		race_fgets_no_lf( line, MAX_TXTLEN ); // coords of end node
 		coordx = strtok(line, node_coords_delimiter);
 		coordy = strtok(NULL, node_coords_delimiter);
 		coordz = strtok(NULL, node_coords_delimiter);
