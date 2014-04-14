@@ -354,8 +354,8 @@ qbool ClientSay( qbool isTeamSay )
 			else
 */
 			{
-				G_cprint("RCON from: %s: %s: %s\n", getname(self), ezinfokey(self, "ip"), str);
-				trap_redirectcmd(self, va("%s\n", str)); // !!! WARNING: FULL ACCESS TO SERVER CONSOLE !!!
+				G_cprint("MM RCON from: %s: %s: %s\n", getname(self), ezinfokey(self, "ip"), str);
+				//trap_redirectcmd(self, va("%s\n", str)); // !!! WARNING: FULL ACCESS TO SERVER CONSOLE !!!
 			}
 
 			return true;
